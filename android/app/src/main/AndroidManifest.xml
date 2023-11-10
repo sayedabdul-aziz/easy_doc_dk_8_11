@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="easy_doc_dk_8_11"
+        android:label="se7ety_dk_8_11"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

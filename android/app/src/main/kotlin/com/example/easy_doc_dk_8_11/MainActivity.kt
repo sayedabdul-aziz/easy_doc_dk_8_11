@@ -1,4 +1,4 @@
-package com.example.easy_doc_dk_8_11
+package com.example.se7ety_dk_8_11
 
 import io.flutter.embedding.android.FlutterActivity
 

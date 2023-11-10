@@ -1,29 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_doc_dk_8_11/core/app_color.dart';
-import 'package:easy_doc_dk_8_11/feature/patient/auth/view/login_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:se7ety_dk_8_11/core/app_color.dart';
+import 'package:se7ety_dk_8_11/feature/patient/auth/view/login_view.dart';
 
-class RegisterView extends StatefulWidget {
-  const RegisterView({super.key});
+class PatientRegisterView extends StatefulWidget {
+  const PatientRegisterView({super.key});
 
   @override
-  _RegisterViewState createState() => _RegisterViewState();
+  _PatientRegisterViewState createState() => _PatientRegisterViewState();
 }
 
-class _RegisterViewState extends State<RegisterView> {
+class _PatientRegisterViewState extends State<PatientRegisterView> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _displayName = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  FocusNode f1 = FocusNode();
-  FocusNode f2 = FocusNode();
-  FocusNode f3 = FocusNode();
-  FocusNode f4 = FocusNode();
 
   bool isVisable = true;
 
@@ -40,171 +35,138 @@ class _RegisterViewState extends State<RegisterView> {
       backgroundColor: Colors.white,
       body: Center(
         child: SingleChildScrollView(
-          child: _signUp(),
-        ),
-      ),
-    );
-  }
-
-  Widget _signUp() {
-    return Form(
-      key: _formKey,
-      child: Padding(
-        padding: const EdgeInsets.only(right: 16, left: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Image.asset(
-              'assets/logo.png',
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Text(
-              'Register Now as a Patient',
-              style: TextStyle(
-                  color: AppColors.primaryColor,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: 30),
-            TextFormField(
-              focusNode: f1,
-              keyboardType: TextInputType.name,
-              controller: _displayName,
-              style: TextStyle(color: AppColors.textColor),
-              decoration: const InputDecoration(
-                hintText: 'Name',
-                prefixIcon: Icon(Icons.person),
-              ),
-              onFieldSubmitted: (value) {
-                f1.unfocus();
-                FocusScope.of(context).requestFocus(f2);
-              },
-              textInputAction: TextInputAction.next,
-              validator: (value) {
-                if (value!.isEmpty) return 'Please enter the Name';
-                return null;
-              },
-            ),
-            const SizedBox(
-              height: 25.0,
-            ),
-            TextFormField(
-              focusNode: f2,
-              keyboardType: TextInputType.emailAddress,
-              controller: _emailController,
-              style: TextStyle(color: AppColors.textColor),
-              decoration: const InputDecoration(
-                hintText: 'Sayed@example.com',
-                prefixIcon: Icon(Icons.email_rounded),
-              ),
-              onFieldSubmitted: (value) {
-                f2.unfocus();
-                FocusScope.of(context).requestFocus(f3);
-              },
-              textInputAction: TextInputAction.next,
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'Please enter the Email';
-                } else if (!emailValidate(value)) {
-                  return 'Please enter correct Email';
-                } else {
-                  return null;
-                }
-              },
-            ),
-            const SizedBox(
-              height: 25.0,
-            ),
-            TextFormField(
-              style: TextStyle(color: AppColors.textColor),
-              obscureText: isVisable,
-              keyboardType: TextInputType.visiblePassword,
-              decoration: InputDecoration(
-                hintText: '********',
-                suffixIcon: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        isVisable = !isVisable;
-                      });
+          child: Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 16, left: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Image.asset(
+                    'assets/logo.png',
+                    height: 200,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'سجل حساب جديد  "مريض"',
+                    style: getTitleStyle(),
+                  ),
+                  const SizedBox(height: 30),
+                  TextFormField(
+                    keyboardType: TextInputType.name,
+                    controller: _displayName,
+                    style: TextStyle(color: AppColors.black),
+                    decoration: InputDecoration(
+                      hintText: 'الاسم',
+                      hintStyle: getbodyStyle(color: Colors.grey),
+                      prefixIcon: const Icon(Icons.person),
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) return 'من فضلك ادخل الاسم';
+                      return null;
                     },
-                    icon: Icon((isVisable)
-                        ? Icons.remove_red_eye
-                        : Icons.visibility_off_rounded)),
-                prefixIcon: const Icon(Icons.lock),
-              ),
-              focusNode: f3,
-              controller: _passwordController,
-              onFieldSubmitted: (value) {
-                f3.unfocus();
-                FocusScope.of(context).requestFocus(f4);
-              },
-              textInputAction: TextInputAction.done,
-              validator: (value) {
-                if (value!.isEmpty) return 'Please enter the Password';
-                return null;
-              },
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Container(
-              child: SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      // showLoaderDialog(context);
-                      _registerAccount();
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.black,
-                    backgroundColor: AppColors.primaryColor,
-                    elevation: 2,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32.0),
-                    ),
                   ),
-                  child: Text(
-                    "Register",
-                    style: GoogleFonts.lato(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  const SizedBox(
+                    height: 25.0,
                   ),
-                ),
-              ),
-            ),
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 18.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Already have an account?",
-                      style: getsmallStyle(color: AppColors.textColor),
+                  TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    controller: _emailController,
+                    textAlign: TextAlign.end,
+                    decoration: const InputDecoration(
+                      hintText: 'Sayed@example.com',
+                      prefixIcon: Icon(Icons.email_rounded),
                     ),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushReplacement(MaterialPageRoute(
-                            builder: (context) => const SignIn(),
-                          ));
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'من فضلك ادخل الايميل';
+                      } else if (!emailValidate(value)) {
+                        return 'من فضلك ادخل الايميل صحيحا';
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                  const SizedBox(
+                    height: 25.0,
+                  ),
+                  TextFormField(
+                    textAlign: TextAlign.end,
+                    style: TextStyle(color: AppColors.black),
+                    obscureText: isVisable,
+                    keyboardType: TextInputType.visiblePassword,
+                    decoration: InputDecoration(
+                      hintText: '********',
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              isVisable = !isVisable;
+                            });
+                          },
+                          icon: Icon((isVisable)
+                              ? Icons.remove_red_eye
+                              : Icons.visibility_off_rounded)),
+                      prefixIcon: const Icon(Icons.lock),
+                    ),
+                    controller: _passwordController,
+                    validator: (value) {
+                      if (value!.isEmpty) return 'من فضلك ادخل كلمة السر';
+                      return null;
+                    },
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(top: 25.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            // showLoaderDialog(context);
+                            // _signInWithEmailAndPassword();
+                          }
                         },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.color1,
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
                         child: Text(
-                          'Sign in',
-                          style: getsmallStyle(color: AppColors.primaryColor),
-                        ))
-                  ],
-                ),
+                          "تسجيل حساب",
+                          style: getTitleStyle(color: AppColors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'لدي حساب ؟',
+                          style: getbodyStyle(color: AppColors.black),
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              Navigator.of(context)
+                                  .pushReplacement(MaterialPageRoute(
+                                builder: (context) => const PatientLoginView(),
+                              ));
+                            },
+                            child: Text(
+                              'سجل دخول',
+                              style: getbodyStyle(color: AppColors.color1),
+                            ))
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -220,7 +182,6 @@ class _RegisterViewState extends State<RegisterView> {
       ),
       onPressed: () {
         Navigator.pop(context);
-        FocusScope.of(context).requestFocus(f2);
       },
     );
 

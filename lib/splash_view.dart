@@ -1,7 +1,6 @@
-import 'package:easy_doc_dk_8_11/core/app_color.dart';
-import 'package:easy_doc_dk_8_11/feature/patient/auth/view/login_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:se7ety_dk_8_11/feature/patient/auth/view/login_view.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -27,7 +26,7 @@ class _SplashViewState extends State<SplashView> {
       () {
         Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const SignIn()
+            MaterialPageRoute(builder: (context) => const PatientLoginView()
                 // user == null ? OnBoardingView() : MainPage(),
                 ));
       },
@@ -36,20 +35,16 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Image.asset('assets/logo.png', width: 300),
-            const SizedBox(
-              height: 30,
-            ),
-            Text(
-              'Healthy Tomorrow, Booked Today!',
-              style: getsmallStyle(),
-            ),
-          ],
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/logo.png', width: 250),
+            ],
+          ),
         ),
       ),
     );

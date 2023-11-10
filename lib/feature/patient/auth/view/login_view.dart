@@ -1,187 +1,155 @@
-import 'package:easy_doc_dk_8_11/core/app_color.dart';
-import 'package:easy_doc_dk_8_11/feature/patient/auth/view/register_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:se7ety_dk_8_11/core/app_color.dart';
+import 'package:se7ety_dk_8_11/feature/patient/auth/view/register_view.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+class PatientLoginView extends StatefulWidget {
+  const PatientLoginView({super.key});
 
   @override
-  _SignInState createState() => _SignInState();
+  _PatientLoginViewState createState() => _PatientLoginViewState();
 }
 
-class _SignInState extends State<SignIn> {
+class _PatientLoginViewState extends State<PatientLoginView> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  FocusNode f1 = FocusNode();
-  FocusNode f2 = FocusNode();
-  FocusNode f3 = FocusNode();
-
   bool isVisable = true;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.white, body: withEmailPassword());
-  }
-
-  Widget withEmailPassword() {
-    return Form(
-      key: _formKey,
-      child: Padding(
-        padding: const EdgeInsets.only(right: 16, left: 16),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              // SizedBox(
-              //   width: double.infinity,
-              //   child: Container(
-              //     child: Image.asset(
-              //       'assets/vector-doc2.jpg',
-              //       scale: 3.5,
-              //     ),
-              //   ),
-              // ),
-
-              Text(
-                'Sign in Now as a Patient .',
-                style: TextStyle(
-                    color: AppColors.primaryColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(height: 30),
-              TextFormField(
-                focusNode: f1,
-                keyboardType: TextInputType.emailAddress,
-                controller: _emailController,
-                style: TextStyle(color: AppColors.textColor),
-                decoration: const InputDecoration(
-                  hintText: 'Sayed@example.com',
-                  prefixIcon: Icon(Icons.email_rounded),
+    return Scaffold(
+        body: Center(
+      child: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 16, left: 16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/logo.png',
+                  height: 200,
                 ),
-                onFieldSubmitted: (value) {
-                  f1.unfocus();
-                  FocusScope.of(context).requestFocus(f2);
-                },
-                textInputAction: TextInputAction.next,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please enter the Email';
-                  } else if (!emailValidate(value)) {
-                    return 'Please enter correct Email';
-                  } else {
+                const SizedBox(height: 20),
+                Text(
+                  'سجل دخول الان "مريض"',
+                  style: getTitleStyle(),
+                ),
+                const SizedBox(height: 30),
+                TextFormField(
+                  keyboardType: TextInputType.emailAddress,
+                  controller: _emailController,
+                  textAlign: TextAlign.end,
+                  decoration: const InputDecoration(
+                    hintText: 'Sayed@example.com',
+                    prefixIcon: Icon(Icons.email_rounded),
+                  ),
+                  textInputAction: TextInputAction.next,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'من فضلك ادخل الايميل';
+                    } else if (!emailValidate(value)) {
+                      return 'من فضلك ادخل الايميل صحيحا';
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+                const SizedBox(
+                  height: 25.0,
+                ),
+                TextFormField(
+                  textAlign: TextAlign.end,
+                  style: TextStyle(color: AppColors.black),
+                  obscureText: isVisable,
+                  keyboardType: TextInputType.visiblePassword,
+                  decoration: InputDecoration(
+                    hintText: '********',
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isVisable = !isVisable;
+                          });
+                        },
+                        icon: Icon((isVisable)
+                            ? Icons.remove_red_eye
+                            : Icons.visibility_off_rounded)),
+                    prefixIcon: const Icon(Icons.lock),
+                  ),
+                  controller: _passwordController,
+                  validator: (value) {
+                    if (value!.isEmpty) return 'من فضلك ادخل كلمة السر';
                     return null;
-                  }
-                },
-              ),
-              const SizedBox(
-                height: 25.0,
-              ),
-              TextFormField(
-                style: TextStyle(color: AppColors.textColor),
-                obscureText: isVisable,
-                keyboardType: TextInputType.visiblePassword,
-                decoration: InputDecoration(
-                  hintText: '********',
-                  suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          isVisable = !isVisable;
-                        });
-                      },
-                      icon: Icon((isVisable)
-                          ? Icons.remove_red_eye
-                          : Icons.visibility_off_rounded)),
-                  prefixIcon: const Icon(Icons.lock),
+                  },
                 ),
-                focusNode: f2,
-                controller: _passwordController,
-                onFieldSubmitted: (value) {
-                  f2.unfocus();
-                  FocusScope.of(context).requestFocus(f3);
-                },
-                textInputAction: TextInputAction.done,
-                validator: (value) {
-                  if (value!.isEmpty) return 'Please enter the Password';
-                  return null;
-                },
-              ),
-              // Container(
-              //   alignment: Alignment.centerRight,
-              //   padding: EdgeInsets.only(top: 5),
-              //   child: Text(
-              //     'Forgot Password?',
-              //     style: getsmallStyle(),
-              //   ),
-              // ),
-              Container(
-                padding: const EdgeInsets.only(top: 25.0),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    focusNode: f3,
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        // showLoaderDialog(context);
-                        // _signInWithEmailAndPassword();
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.black,
-                      backgroundColor: AppColors.primaryColor,
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32.0),
+                Container(
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.only(top: 5, right: 10),
+                  child: Text(
+                    'نسيت كلمة السر ؟',
+                    style: getsmallStyle(),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(top: 25.0),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          // showLoaderDialog(context);
+                          // _signInWithEmailAndPassword();
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.color1,
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      "Sign In",
-                      style: GoogleFonts.lato(
-                        color: Colors.white,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
+                      child: Text(
+                        "تسجيل الدخول",
+                        style: getTitleStyle(color: AppColors.white),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Container(
-                child: Padding(
+                Padding(
                   padding: const EdgeInsets.only(top: 30),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Haven\'t an account?',
-                        style: getsmallStyle(color: AppColors.textColor),
+                        'ليس لدي حساب ؟',
+                        style: getbodyStyle(color: AppColors.black),
                       ),
                       TextButton(
                           onPressed: () {
                             Navigator.of(context)
                                 .pushReplacement(MaterialPageRoute(
-                              builder: (context) => const RegisterView(),
+                              builder: (context) => const PatientRegisterView(),
                             ));
                           },
                           child: Text(
-                            'Create One !',
-                            style: getsmallStyle(color: AppColors.primaryColor),
+                            'سجل الان',
+                            style: getbodyStyle(color: AppColors.color1),
                           ))
                     ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
-    );
+    ));
   }
 
   @override
