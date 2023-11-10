@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:se7ety_dk_8_11/feature/welcome_view.dart';
 
-class HomeView extends StatelessWidget {
-  const HomeView({super.key});
+class DoctorHomeView extends StatelessWidget {
+  const DoctorHomeView({super.key});
 
   @override
   Widget build(BuildContext context) {

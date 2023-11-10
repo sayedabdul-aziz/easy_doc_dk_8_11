@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:se7ety_dk_8_11/core/app_color.dart';
-import 'package:se7ety_dk_8_11/feature/patient/auth/view_model/auth_cubit.dart';
+import 'package:se7ety_dk_8_11/feature/auth/view_model/auth_cubit.dart';
 import 'package:se7ety_dk_8_11/splash_view.dart';
 
 Future<void> main() async {
