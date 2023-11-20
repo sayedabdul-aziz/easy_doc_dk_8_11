@@ -16,7 +16,7 @@ class WelcomeView extends StatelessWidget {
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  opacity: .8,
+                  // opacity: .8,
                   image: NetworkImage(
                     'https://1.bp.blogspot.com/-BmyjFOQt2RA/XvwA_Or2J6I/AAAAAAAAEBc/fsDG7TtXiiojDooZpzfcmWarQsPX1vq-wCK4BGAsYHg/d/medical-wallpaper-hd-3.png',
                   ),
@@ -50,7 +50,7 @@ class WelcomeView extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: AppColors.color1.withOpacity(.5),
                         borderRadius: BorderRadius.circular(20),
-                        boxShadow: <BoxShadow>[
+                        boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(.3),
                             blurRadius: 15,
@@ -114,16 +114,10 @@ class WelcomeView extends StatelessWidget {
                                         borderRadius:
                                             BorderRadius.circular(20)),
                                     child: Center(
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Text(
-                                            'مريض',
-                                            style: getTitleStyle(
-                                                color: AppColors.black),
-                                          )
-                                        ],
+                                      child: Text(
+                                        'مريض',
+                                        style: getTitleStyle(
+                                            color: AppColors.black),
                                       ),
                                     )),
                               ),

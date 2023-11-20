@@ -6,6 +6,7 @@ import 'package:se7ety_dk_8_11/core/app_color.dart';
 import 'package:se7ety_dk_8_11/core/functions/email_validate.dart';
 import 'package:se7ety_dk_8_11/core/widgets/custom_error.dart';
 import 'package:se7ety_dk_8_11/core/widgets/custom_loading.dart';
+import 'package:se7ety_dk_8_11/feature/auth/view/doctor_register_data.dart';
 import 'package:se7ety_dk_8_11/feature/auth/view/login_view.dart';
 import 'package:se7ety_dk_8_11/feature/auth/view_model/auth_cubit.dart';
 import 'package:se7ety_dk_8_11/feature/patient/home/home_view.dart';
@@ -28,6 +29,7 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   void dispose() {
+    _displayName.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -42,12 +44,21 @@ class _RegisterViewState extends State<RegisterView> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is RegisterSucessState) {
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (context) => const HomeView(),
-            ),
-            (route) => false,
-          );
+          if (widget.index == 0) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const DoctorUploadData(),
+              ),
+              (route) => false,
+            );
+          } else {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const HomeView(),
+              ),
+              (route) => false,
+            );
+          }
         } else if (state is RegisterErrorState) {
           Navigator.of(context).pop();
           showErrorDialog(context, state.error);

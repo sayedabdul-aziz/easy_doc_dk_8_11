@@ -24,3 +24,13 @@ class RegisterErrorState extends AuthState {
 
   RegisterErrorState({required this.error});
 }
+
+class UpdateLoadingState extends AuthState {}
+
+class UpdateSucessState extends AuthState {}
+
+class UpdateErrorState extends AuthState {
+  final String error;
+
+  UpdateErrorState({required this.error});
+}

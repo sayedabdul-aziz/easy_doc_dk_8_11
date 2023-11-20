@@ -6,7 +6,8 @@ import 'package:se7ety_dk_8_11/core/widgets/custom_error.dart';
 import 'package:se7ety_dk_8_11/core/widgets/custom_loading.dart';
 import 'package:se7ety_dk_8_11/feature/auth/view/register_view.dart';
 import 'package:se7ety_dk_8_11/feature/auth/view_model/auth_cubit.dart';
-import 'package:se7ety_dk_8_11/feature/patient/home/home_view.dart';
+import 'package:se7ety_dk_8_11/feature/doctor/nav_bar_view.dart';
+import 'package:se7ety_dk_8_11/feature/patient/nav_bar_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key, required this.index});
@@ -34,7 +35,9 @@ class _LoginViewState extends State<LoginView> {
         if (state is LoginSucessState) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (context) => const HomeView(),
+              builder: (context) => (widget.index == 0)
+                  ? const DoctortNavBar()
+                  : const PatientNavBar(),
             ),
             (route) => false,
           );

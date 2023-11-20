@@ -89,4 +89,39 @@ class AuthCubit extends Cubit<AuthState> {
       }
     }
   }
+
+  updateDoctorData(
+      {required String uid,
+      required String specialization,
+      required String image,
+      required String email,
+      required String phone1,
+      String? phone2,
+      required String bio,
+      required String startTime,
+      required String endTime,
+      required String address}) async {
+    emit(UpdateLoadingState());
+    try {
+      FirebaseFirestore.instance.collection('doctors').doc(uid).set({
+        'image': image,
+        'specialization': specialization,
+        'rating': null,
+        'email': email,
+        'phone1': phone1,
+        'phone2': phone2,
+        'bio': bio,
+        'openHour': startTime,
+        'closeHour': endTime,
+        'address': address,
+      }, SetOptions(merge: true));
+      emit(UpdateSucessState());
+    } catch (e) {
+      emit(UpdateErrorState(error: e.toString()));
+    }
+
+    // Navigator.of(context).pushReplacement(MaterialPageRoute(
+    //   builder: (context) => const HomeView(),
+    // ));
+  }
 }
